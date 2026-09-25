@@ -609,14 +609,18 @@ function getSuperAdminData(ss) {
   if (leaderSheet && leaderSheet.getLastRow() > 1) {
     const data = leaderSheet.getDataRange().getValues();
     const headers = data[0];
-    const idx = (name) => { const i = headers.indexOf(name); return i >= 0 ? i : null; };
+    const idx = (name) => { 
+      const n = String(name).trim().toLowerCase();
+      const i = headers.findIndex(h => String(h).trim().toLowerCase() === n);
+      return i >= 0 ? i : null; 
+    };
     const iDate = idx("Date") ?? 0;
     const iTime = idx("Time") ?? 1;
     const iName = idx("Leader Name") ?? 2;
     const iRegion = idx("Region") ?? 3;
-    const iVeh = idx("Vehicle Info") ?? (idx("Odometer/Vehicle Info") ?? 4);
-    const iPhoto = idx("Photo URL") ?? (idx("Selfie/Photo URL") ?? 5);
-    const iGPS = idx("GPS") ?? 6;
+    const iVeh = idx("Odometer/Vehicle Info") ?? (idx("Vehicle Info") ?? 4);
+    const iGPS = idx("GPS") ?? 5;
+    const iPhoto = idx("Selfie/Photo URL") ?? (idx("Photo URL") ?? 6);
     const iLocation = idx("Location") ?? 7;
 
     for (let i = 1; i < data.length; i++) {
